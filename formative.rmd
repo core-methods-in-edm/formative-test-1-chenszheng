@@ -1,0 +1,59 @@
+---
+title: "formative.rmd"
+author: "Chen Zheng"
+date: "October 5, 2017"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+library(tidyr)
+
+##Question 4
+D1 <- read.csv("C:/Users/Chen/Documents/CUTC/courses/2017 Fall_Core Methods of Educational Data Mining/1005test/HMXPC13_DI_v2_5-14-14.csv")
+
+##Question 5
+head(D1)
+#The DI suffix could mean "digital input".
+
+##Question 6
+Q6<- select(D1,course_id, certified) %>% filter(course_id=="HarvardX/CS50x/2012",certified==1)
+A6<-nrow(Q6)
+A6
+#1287 people enrolled in HarvardX/CS50x received certification in 2012.
+
+##Question 7
+Q7 <- select(D1, course_id, registered, final_cc_cname_DI, start_time_DI) %>% filter(course_id=="HarvardX/CS50x/2012",registered==1,final_cc_cname_DI=="Colombia",start_time_DI=="2012-10-15")
+A7<-nrow(Q7)
+A7
+#10 people registered for Harvard/CS50x from Colombia on October 15, 2012.
+
+##Question 8
+D2 <- select(D1, userid_DI, start_time_DI, final_cc_cname_DI) %>% filter(final_cc_cname_DI=="Germany")
+
+##Question 9
+temp <- select(D1, userid_DI, start_time_DI, registered)
+temp<- distinct(temp)
+Q3<-spread(temp, key=start_time_DI, value=registered)
+
+##Question 10
+Q3.temp <- select(Q3,-userid_DI)
+rownames(Q3.temp)<-Q3[,1]
+Q3<-Q3.temp
+
+##Question 11
+M1 <- as.matrix(Q3)
+
+##Question 12
+M2 <- t(M1)
+
+##Question 13
+M3<-M1%*%M2
+rownames(M3)<-M1[,1]
+colnames(M3)<-M2[1,]
+
+##Question 14
+diag(M3)<-NA
+
+```
+
